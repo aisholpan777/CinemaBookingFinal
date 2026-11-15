@@ -1,0 +1,17 @@
+{
+  "Movies": [
+    {"Id":1,"Title":"Interstellar","Genre":"Sci-Fi","DurationMinutes":169},
+    {"Id":2,"Title":"Inception","Genre":"Sci-Fi","DurationMinutes":148},
+    {"Id":3,"Title":"Inside Out","Genre":"Animation","DurationMinutes":95},
+    {"Id":4,"Title":"The Grand Budapest Hotel","Genre":"Comedy","DurationMinutes":99},
+    {"Id":5,"Title":"Little Women","Genre":"Drama","DurationMinutes":135}
+  ],
+  "Sessions": [
+    {"Id":101,"MovieId":1,"StartsAt":"2027-01-15T18:00:00","Seats":12,"BasePriceCents":250000},
+    {"Id":102,"MovieId":2,"StartsAt":"2027-01-15T20:00:00","Seats":10,"BasePriceCents":220000},
+    {"Id":103,"MovieId":3,"StartsAt":"2027-01-16T14:00:00","Seats":8,"BasePriceCents":180000},
+    {"Id":104,"MovieId":4,"StartsAt":"2027-01-16T17:00:00","Seats":12,"BasePriceCents":200000},
+    {"Id":105,"MovieId":5,"StartsAt":"2027-01-17T19:00:00","Seats":10,"BasePriceCents":240000}
+  ],
+  "Bookings": []
+}
