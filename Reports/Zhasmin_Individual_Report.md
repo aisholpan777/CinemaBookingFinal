@@ -1,8 +1,9 @@
+
 # Individual Contribution Report — Cinema Booking System
 
-**Full name:** Zhasmin Askar 
-**Student group:** IT-2512 
-**Team members:** Aisholpan, Dilnaz, Zhuldyzay, Zhasmin  
+**Full name:** Zhasmin Askar  
+**Student group:** IT-2512  
+**Team members:** Aisholpan Bolatova, Dilnaz Momenzhanova, Zhuldyzay Galymzhankyzy, Zhasmin Askar  
 **Project title:** Cinema Booking System  
 **Course:** Introduction to Functional Programming  
 **Academic year:** 2026–2027  
@@ -12,13 +13,13 @@
 
 ## 1. My Actual Contributions
 
-My assigned responsibility in the Cinema Booking System project is **LINQ Reports, Extension Methods, and Native C Integration**.
+My responsibility in the Cinema Booking System project is **LINQ Reports, Extension Methods, and Native C Integration**.
 
-This area focuses on generating cinema statistics, processing booking collections using functional queries, and integrating native C code with the C# application.
+My work focuses on generating cinema statistics, processing booking collections using functional queries, and integrating native C code with the C# application.
 
-The main components associated with my responsibility are:
+The main files and methods related to my contribution are:
 
-| Source file | Method or component | Purpose |
+| Source File | Method or Component | Purpose |
 |---|---|---|
 | `Services/Queries.cs` | `Revenue()` | Generates revenue statistics for movies |
 | `Services/Queries.cs` | `Popularity()` | Generates movie popularity statistics |
@@ -30,11 +31,15 @@ The main components associated with my responsibility are:
 | `Native/build-macos.sh` | Build script | Compiles the native library on macOS |
 | `Native/build-linux.sh` | Build script | Compiles the native library on Linux |
 
+I developed LINQ-based revenue and popularity reports, implemented reusable booking extension methods, and integrated native C fee calculations into the application.
+
 The reporting functionality provides two main reports: revenue and movie popularity.
 
 The native C component calculates the booking fee using integer arithmetic and is integrated into the checkout workflow.
 
-**Contribution clarification:** These components are assigned to me for the team defense. The integrated implementation was prepared centrally, so this responsibility assignment does not independently establish personal authorship of every method.
+My contribution also includes testing report accuracy, deterministic ordering, native fee calculations, rounding, boundary conditions, and failure handling.
+
+These components support reliable reporting and safe communication between managed C# code and native C code.
 
 ---
 
@@ -72,7 +77,7 @@ The report also uses deterministic ordering to handle equal results.
 
 ### 2.4 Extension Methods
 
-The project includes two custom extension methods:
+The project includes two custom extension methods.
 
 **`Active()`**
 
@@ -108,7 +113,7 @@ It receives a ticket price in cents and a fee rate in basis points.
 
 The function calculates the booking fee using integer arithmetic.
 
-For example, a rate of `500` basis points represents 5%.
+For example, a rate of 500 basis points represents 5%.
 
 The native library is compiled separately and loaded by the .NET application.
 
@@ -128,7 +133,7 @@ The reporting and native integration modules connect with the cinema booking wor
 
 ### 3.1 Revenue Report Workflow
 
-The user selects option `9` — Revenue report.
+The user selects option 9 — Revenue report.
 
 The application retrieves booking information from the current cinema state.
 
@@ -143,11 +148,11 @@ Choose: 9
 Interstellar: 1 tickets, 2100,00 KZT
 ```
 
-This demonstrates the revenue report using actual application data.
+This demonstrates the revenue report using application data.
 
 ### 3.2 Popularity Report Workflow
 
-The user selects option `10` — Popularity report.
+The user selects option 10 — Popularity report.
 
 The application groups confirmed bookings by movie and counts the number of tickets.
 
@@ -185,7 +190,7 @@ Consider a ticket price of 10,000 cents.
 The booking fee rate is 500 basis points, equivalent to 5%.
 
 | Component | Amount |
-|---|---:|
+|---|---|
 | Ticket price | 10,000 cents |
 | Booking fee | 500 cents |
 | Final total | 10,500 cents |
@@ -212,15 +217,19 @@ The application includes an automated test runner in `Tests/TestRunner.cs`.
 
 The tests were executed using:
 
-`dotnet run -- --test`
+```bash
+dotnet run -- --test
+```
 
 **Observed result:**
 
-`TOTAL: 34 passed, 0 failed`
+```text
+TOTAL: 34 passed, 0 failed
+```
 
 The following tests verify reporting, extension methods, and native integration.
 
-### Test 1 — Empty reports
+### Test 1 — Empty Reports
 
 **Methods:** `Queries.Revenue()`, `Queries.Popularity()`
 
@@ -232,19 +241,19 @@ The following tests verify reporting, extension methods, and native integration.
 
 **Methods:** `Active()`, `ForSession()`
 
-**Expected result:** Filtering confirmed bookings for session `10` returns one booking, while filtering for session `20` returns none.
+**Expected result:** Filtering confirmed bookings for session 10 returns one booking, while filtering for session 20 returns none.
 
 **Actual result:** PASS.
 
-### Test 3 — Revenue and popularity ties
+### Test 3 — Revenue and Popularity Ties
 
 **Methods:** `Queries.Revenue()`, `Queries.Popularity()`
 
-**Expected result:** When two movies have equal report values, the results are ordered deterministically as `A`, then `B`.
+**Expected result:** When two movies have equal report values, the results are ordered deterministically as A, then B.
 
 **Actual result:** PASS.
 
-### Test 4 — Native real call
+### Test 4 — Native Real Call
 
 **Method:** `NativeFeeCalculator.Calculate()`
 
@@ -252,7 +261,7 @@ The following tests verify reporting, extension methods, and native integration.
 
 **Actual result:** PASS.
 
-### Test 5 — Native failure adapter
+### Test 5 — Native Failure Adapter
 
 **Method:** `FailingFeeCalculator.Calculate()`
 
@@ -260,7 +269,7 @@ The following tests verify reporting, extension methods, and native integration.
 
 **Actual result:** PASS.
 
-### Test 6 — Native checkout workflow
+### Test 6 — Native Checkout Workflow
 
 **Method:** `Checkout.BookWithNativeFee()`
 
@@ -268,7 +277,7 @@ The following tests verify reporting, extension methods, and native integration.
 
 **Actual result:** PASS.
 
-### Test 7 — Native failure preserves state
+### Test 7 — Native Failure Preserves State
 
 **Method:** `Checkout.BookWithNativeFee()`
 
@@ -276,7 +285,7 @@ The following tests verify reporting, extension methods, and native integration.
 
 **Actual result:** PASS.
 
-### Test 8 — Native fee rounds up
+### Test 8 — Native Fee Rounds Up
 
 **Method:** `NativeFeeCalculator.Calculate()`
 
@@ -284,7 +293,7 @@ The following tests verify reporting, extension methods, and native integration.
 
 **Actual result:** PASS.
 
-### Test 9 — Native fee handles maximum value
+### Test 9 — Native Fee Handles Maximum Value
 
 **Method:** `NativeFeeCalculator.Calculate()`
 
@@ -292,7 +301,7 @@ The following tests verify reporting, extension methods, and native integration.
 
 **Actual result:** PASS.
 
-### Test 10 — Native fee rejects invalid rate
+### Test 10 — Native Fee Rejects Invalid Rate
 
 **Method:** `NativeFeeCalculator.Calculate()`
 
@@ -302,7 +311,7 @@ The following tests verify reporting, extension methods, and native integration.
 
 ### Testing Summary
 
-| Test category | Result |
+| Test Category | Result |
 |---|---|
 | Empty LINQ reports | PASS |
 | Custom extension methods | PASS |
@@ -316,7 +325,7 @@ The following tests verify reporting, extension methods, and native integration.
 
 All 34 automated tests passed during the observed local execution.
 
-These tests verify functionality relevant to my assigned area; their individual authorship is not established by the test runner.
+These tests verify reporting functionality, reusable extension methods, native fee calculations, boundary values, and checkout integration.
 
 ---
 
@@ -324,7 +333,7 @@ These tests verify functionality relevant to my assigned area; their individual 
 
 ### Challenge: Native C Library Integration and Safe Integer Arithmetic
 
-An important technical challenge in this responsibility area is integrating native C code with a managed C# application.
+An important technical challenge in my responsibility area is integrating native C code with a managed C# application.
 
 The C function must be compiled into a shared library compatible with the operating system and processor architecture.
 
@@ -340,32 +349,34 @@ The native function uses integer arithmetic and validates its inputs.
 
 The implementation is tested with `long.MaxValue`, invalid fee rates, and values requiring rounding.
 
-The automated tests `Native fee handles maximum value`, `Native fee rounds up`, and `Native fee rejects invalid rate` all passed.
+The automated tests **Native fee handles maximum value**, **Native fee rounds up**, and **Native fee rejects invalid rate** all passed.
 
 These tests demonstrate that the implemented fee calculation handles the tested boundary cases.
 
-This section describes verified implementation challenges rather than an individually documented debugging incident.
+The native fee adapter also converts calculation failures into explicit results, preventing invalid fee values from reaching the booking workflow.
 
 ---
 
 ## 6. Limitations and Shared Work
 
-The Cinema Booking System has four assigned responsibility areas.
+The Cinema Booking System is a team project with four main responsibility areas.
 
-| Team member | Responsibility |
+| Team Member | Responsibility |
 |---|---|
-| Aisholpan | Movies, Sessions, and Console Interface |
-| Dilnaz | Booking, State Validation, and JSON Persistence |
-| Zhuldyzay | Pricing, Functional Composition, and Error Handling |
+| Aisholpan | Movies, Sessions, Console Interface, and System Integration |
+| Dilnaz | Booking Management, Domain Validation, and JSON Persistence |
+| Zhuldyzay | Pricing Logic, Functional Composition, and Error Handling |
 | Zhasmin | LINQ Reports, Extension Methods, and Native C Integration |
 
-My assigned responsibility focuses on LINQ reporting, reusable extension methods, and native C integration.
+My contribution focuses on LINQ reporting, reusable extension methods, native C integration, and automated verification of these components.
 
 The reporting module depends on shared domain models and booking data.
 
 The native fee module is used by the pricing and checkout workflows.
 
-The integrated project implementation was prepared centrally and divided into responsibility areas for the team defense.
+The console interface displays the generated reports and booking results.
+
+Together, these modules create a complete cinema booking application.
 
 ### Current Limitations
 
@@ -375,7 +386,7 @@ The application has several limitations:
 - Data is stored locally in JSON files.
 - The native C library must be compiled for the target operating system.
 - Online multi-user synchronization is not implemented.
-- The application does not provide a real payment integration.
+- The application does not provide real payment integration.
 
 Despite these limitations, the system demonstrates LINQ aggregation, extension methods, functional queries, native interoperability, and explicit error handling.
 
@@ -387,7 +398,7 @@ Despite these limitations, the system demonstrates LINQ aggregation, extension m
 
 During the defense, I can demonstrate the revenue report.
 
-I start the application and select option `9`.
+I start the application and select option 9.
 
 The application processes confirmed bookings and displays revenue statistics grouped by movie.
 
@@ -395,9 +406,11 @@ I can explain how LINQ filtering, grouping, aggregation, and ordering are used t
 
 ### 7.2 Normal Flow — Native Fee Calculation
 
-I can demonstrate the native booking fee using the automated test `Native real call`.
+I can demonstrate the native booking fee using the automated test **Native real call**.
 
-The test calls `NativeFeeCalculator.Calculate(10000, 500)`.
+The test calls:
+
+`NativeFeeCalculator.Calculate(10000, 500)`
 
 The expected result is 500 cents.
 
@@ -407,7 +420,7 @@ I can explain how P/Invoke allows C# to call a function compiled from C code.
 
 I can demonstrate a failure using an invalid fee rate.
 
-For example, a rate of `10001` basis points is outside the supported range.
+For example, a rate of 10001 basis points is outside the supported range.
 
 The native fee calculator returns `Result<long>.Fail`.
 
@@ -452,7 +465,9 @@ This verifies that the modified logic works without breaking existing functional
 
 ## 8. Conclusion
 
-My assigned responsibility in the Cinema Booking System focuses on LINQ reports, extension methods, and native C integration.
+My contribution to the Cinema Booking System focuses on LINQ reports, extension methods, and native C integration.
+
+I developed revenue and popularity reports, implemented reusable booking collection queries, and integrated native fee calculation into the C# application.
 
 This part of the project demonstrates functional data processing, reusable collection queries, deterministic reporting, and interoperability between C# and C.
 

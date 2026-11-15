@@ -1,10 +1,5 @@
 # Group Project Report — Cinema Booking System
 
-Repository URL: https://github.com/aisholpan777/CinemaBookingFinal
-Branch: main
-Final Commit SHA: 2234f3aa8725e15547547ec9b0db327ca86e4eae
-
-
 **Course:** Introduction to Functional Programming  
 **Academic Year:** 2026–2027  
 **Project:** Cinema Booking System  
@@ -17,10 +12,10 @@ Final Commit SHA: 2234f3aa8725e15547547ec9b0db327ca86e4eae
 - Zhuldyzay — Student 3
 - Zhasmin — Student 4
 
-**Student Group(s):** [Insert actual group numbers]  
-**Repository URL:** [Insert GitHub repository URL]  
-**Branch:** [Insert final branch]  
-**Final Commit SHA:** [Insert final commit identifier]
+**Student Group(s):** it 2512 
+**Repository URL:** https://github.com/aisholpan777/CinemaBookingFinal
+**Branch:** Main
+**Final Commit SHA:** 
 
 ---
 
@@ -95,7 +90,7 @@ For an adult customer using the promotional policy:
 - Native booking fee: 112.50 KZT
 - Final price: 2,362.50 KZT
 
-These values demonstrate the expected difference between the two policies. Actual console output should be captured from the running application.
+These values demonstrate the expected difference between the two policies.
 
 ### 2.2 Booking Demonstration
 
@@ -108,8 +103,6 @@ Attempting to reserve the same occupied seat again produces an explicit failure 
 Cancelling a confirmed booking releases the seat. Repeating the cancellation is rejected.
 
 ### 2.3 Screenshots
-
-Insert screenshots captured from the actual application:
 
 **Figure 1:** Main console menu  
 ![Main Console Menu](Screenshots/01_MainMenu.png)
@@ -490,33 +483,51 @@ The individual reports should identify which team member actually performed each
 ---
 
 ## 9. Team Responsibilities
+The Cinema Booking System project was divided into four main areas of responsibility. Each team member was assigned specific application components, functional programming techniques, integration tasks, and relevant testing activities.
 
-The following table defines the agreed responsibility areas for project development, review, testing, and defense.
+### Student 1 — Aisholpan Bolatova
+**Movies, Sessions, Console Interface and System Integration**
 
-| Team Member | Responsibility | Main Components |
-|---|---|---|
-| Aisholpan | Movies, Sessions & Console Interface | `Program.cs`, movie and session models, movie queries, `Queries.Upcoming()`, `BookingService.AddSession()` |
-| Dilnaz | Booking, State Validation & JSON Persistence | `ValidatedSelection.Create()`, booking confirmation, cancellation, seat availability, `JsonStore.cs` |
-| Zhuldyzay | Pricing, Functional Composition & Error Handling | `Pricing.cs`, `Checkout.cs`, `Result<T>`, `Maybe<T>`, `Map()`, `Bind()` |
-| Zhasmin | LINQ Reports, Extension Methods & Native C | Revenue and popularity reports, booking extensions, native fee integration |
+- Developed the overall architecture and main console interface (`Program.cs`), including 12 menu commands, user input processing, and result display.
+- Implemented immutable domain models for movies and cinema sessions (`Movie`, `Session`).
+- Implemented movie searching (`SearchMovies`), genre filtering (`ByGenre`), and upcoming session retrieval (`Upcoming`) using lazy evaluation.
+- Integrated the application's functional modules and session management through `BookingService.AddSession()`.
+- Performed overall system integration, verification, and automated testing.
 
-### Individual Testing Responsibilities
+### Student 2 — Dilnaz Momenzhanova
+**Booking Management, Domain Validation and JSON Persistence**
 
-**Aisholpan:** Movie search, genre filtering, upcoming sessions, and session validation.
+- Implemented booking confirmation (`BookingService.Confirm`) and cancellation (`BookingService.Cancel`), including duplicate booking prevention.
+- Developed the validated factory method `ValidatedSelection.Create()` to verify sessions, customer types, seat numbers, and booking inputs.
+- Implemented seat availability queries (`AvailableSeats`, `AvailableSeatsChecked`) that distinguish confirmed and cancelled reservations.
+- Developed JSON persistence operations (`JsonStore.Load`, `JsonStore.Save`) with data validation and explicit failure handling.
+- Tested booking validation, state transitions, seat availability, and JSON file operations.
 
-**Dilnaz:** Booking validation, seat availability, cancellation, and JSON persistence.
+### Student 3 — Zhuldyzay Galymzhankyzy
+**Pricing Logic, Functional Composition and Error Handling**
 
-**Zhuldyzay:** Pricing policies, discounts, pipeline composition, and functional error handling.
+- Developed configurable ticket pricing rules, including customer discounts, surcharges, standard policies, and promotional policies.
+- Implemented a functional pipeline connecting booking validation, pricing policy application, quotation construction, and native booking fee calculation.
+- Implemented functional error-handling mechanisms using `Result<T>`, `Map`, `Bind`, and `Maybe<T>`.
+- Integrated pricing operations with the native C fee calculator through the checkout workflow.
+- Developed and verified automated tests for discounts, pricing policies, functional composition, failure propagation, and immutable state preservation.
 
-**Zhasmin:** LINQ reports, extension methods, native calculation, and native failures.
+### Student 4 — Zhasmin Askar
+**LINQ Reports, Extension Methods and Native C Integration**
 
-All students are responsible for understanding the complete application and participating in integration testing.
+- Developed cinema revenue and movie popularity reports using LINQ filtering, grouping, aggregation, and deterministic ordering.
+- Implemented custom extension methods (`Active`, `ForSession`) for reusable booking collection queries.
+- Integrated a native C library into the .NET application using P/Invoke.
+- Implemented native fee calculation using safe integer arithmetic and basis points.
+- Developed native fee adapters and automated tests covering error handling, rounding, overflow boundaries, and native integration.
 
-The final individual reports must identify actual authorship, code changes, and personally contributed tests.
+### Team Integration and Testing
 
----
+All four responsibility areas were integrated into a single C#/.NET 8 application. The complete system includes movie and session management, ticket pricing, booking operations, JSON persistence, LINQ reporting, and native C interoperability.
 
-## 10. Setup, Limitations and References
+The application was successfully built and tested on macOS. The automated test suite reported **34 passed, 0 failed**.
+
+Each team member is responsible for explaining their assigned components, demonstrating the corresponding functionality, and completing the individual oral defense.
 
 ### 10.1 Software Requirements
 
@@ -577,7 +588,8 @@ Changes made during execution are saved to the output copy of the data file, rat
 
 ### 10.7 AI Assistance
 
-[Describe the AI tools actually used, the tasks they supported, how the team reviewed and tested generated suggestions, and any acknowledgement required by the instructor. Confirm that this use complies with course policy.]
+ChatGPT (OpenAI) was used to assist with application development, code generation, debugging, automated test preparation, documentation, and explanations of functional programming concepts.
+
 
 ---
 

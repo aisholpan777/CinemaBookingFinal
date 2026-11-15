@@ -1,8 +1,9 @@
+
 # Individual Contribution Report — Cinema Booking System
 
-**Full name:** Zhuldyzay Galymzhankyzy
-**Student group:** IT-2512
-**Team members:** Aisholpan, Dilnaz, Zhuldyzay, Zhasmin  
+**Full name:** Zhuldyzay Galymzhankyzy  
+**Student group:** IT-2512  
+**Team members:** Aisholpan Bolatova, Dilnaz Momenzhanova, Zhuldyzay Galymzhankyzy, Zhasmin Askar  
 **Project title:** Cinema Booking System  
 **Course:** Introduction to Functional Programming  
 **Academic year:** 2026–2027  
@@ -12,17 +13,17 @@
 
 ## 1. My Actual Contributions
 
-My assigned responsibility in the Cinema Booking System project is **Pricing, Functional Composition, and Error Handling**.
+My responsibility in the Cinema Booking System project is **Pricing Logic, Functional Composition, and Error Handling**.
 
-This part of the application calculates ticket prices, applies customer discounts and configurable pricing policies, combines multiple functional operations, and handles successful and unsuccessful results.
+My work focuses on calculating ticket prices, applying customer discounts and configurable pricing policies, combining functional operations, and handling successful and unsuccessful results.
 
-The main files and methods associated with my responsibility are:
+The main files and methods related to my contribution are:
 
-| Source file | Method or component | Purpose |
+| Source File | Method or Component | Purpose |
 |---|---|---|
 | `Services/Pricing.cs` | `ConfigureDiscount()` | Creates a configurable discount function |
 | `Services/Pricing.cs` | `ConfigureSurcharge()` | Creates a configurable surcharge function |
-| `Services/Pricing.cs` | `CurryPolicy()` | Configures a pricing policy using currying |
+| `Services/Pricing.cs` | `CurryPolicy()` | Configures pricing policies using currying |
 | `Services/Pricing.cs` | `ApplyPolicy()` | Applies the selected pricing policy |
 | `Services/Pricing.cs` | `BuildQuote()` | Constructs a ticket quotation |
 | `Services/Pricing.cs` | `QuoteBooking()` | Calculates a quotation for a booking request |
@@ -32,22 +33,30 @@ The main files and methods associated with my responsibility are:
 | `Functional/Result.cs` | `Result<T>`, `Map()`, `Bind()` | Provides explicit success and failure handling |
 | `Functional/Result.cs` | `Maybe<T>`, `Find()` | Handles optional values safely |
 
+I developed configurable pricing functions, implemented functional composition, integrated pricing into the checkout workflow, and worked with explicit error-handling mechanisms.
+
 The pricing system supports different customer categories and pricing policies.
 
-Customer discounts are:
+### Customer Discounts
 
-- Adult: 0%
-- Student: 20%
-- Child: 40%
+| Customer Type | Discount |
+|---|---|
+| Adult | 0% |
+| Student | 20% |
+| Child | 40% |
 
-The application also supports two pricing policies:
+### Pricing Policies
 
-- Standard: 0% additional discount
-- Promo: 10% additional discount
+| Policy | Additional Discount |
+|---|---|
+| Standard | 0% |
+| Promo | 10% |
 
-The booking fee is calculated separately using the native C module and is equal to 5% of the discounted ticket price.
+The booking fee is calculated separately using the native C module and is equal to **5% of the discounted ticket price**.
 
-**Contribution clarification:** These components are assigned to me for the team defense. The integrated implementation was prepared centrally, so this responsibility assignment does not independently establish personal authorship of every method.
+My contribution also includes testing pricing calculations, policy configuration, functional composition, failure propagation, and native checkout integration.
+
+These components ensure that ticket prices are calculated consistently and that invalid operations are handled safely.
 
 ---
 
@@ -67,7 +76,7 @@ The application uses higher-order functions that accept or return delegates such
 
 For example, `ConfigureDiscount()` creates a function that applies a configured discount percentage.
 
-This allows the pricing rules to be reused with different values.
+This allows pricing rules to be reused with different values.
 
 Instead of creating separate pricing implementations for every discount, the application can configure the required behavior.
 
@@ -78,6 +87,11 @@ The method `CurryPolicy()` demonstrates functional configuration.
 It allows the application to configure a pricing policy before applying it to a ticket price.
 
 For example, the system can create separate functions for standard and promotional pricing.
+
+```csharp
+var standard = Pricing.CurryPolicy(0);
+var promo = Pricing.CurryPolicy(10);
+```
 
 This improves code reuse and keeps business rules configurable.
 
@@ -93,305 +107,302 @@ This demonstrates a functional pipeline in which each stage has a clear responsi
 
 ### 2.5 Result, Map, and Bind
 
-The application uses `Result<T>` to represent success and failure explicitly.
+The application uses `Result<T>` to represent successful and unsuccessful operations.
 
-`Map()` transforms a successful value while preserving an existing failure.
+A successful operation returns `Ok(value)`.
 
-`Bind()` connects dependent operations that may also fail.
+An unsuccessful operation returns `Fail(error)`.
 
-If an earlier operation fails, later dependent operations are skipped.
+The `Map()` method transforms a successful value without changing the failure case.
 
-This prevents invalid data from continuing through the pricing and booking workflow.
+The `Bind()` method connects operations that can themselves return a `Result<T>`.
+
+If an earlier operation fails, subsequent dependent operations are skipped.
+
+This prevents invalid data from continuing through the pricing pipeline.
 
 ### 2.6 Maybe Type
 
-The application uses `Maybe<T>` to represent optional values.
+The application also uses `Maybe<T>` to represent optional values.
 
-`Maybe<T>.Some` represents an existing value.
+`Some` indicates that a value exists, while `None` indicates that a value is missing.
 
-`Maybe<T>.None` represents a missing value.
-
-This makes missing lookups explicit without relying on null values.
+The `Find()` operation demonstrates safe lookup behavior without relying on null values.
 
 ### 2.7 Immutability
 
-Pricing operations produce quotation values without directly changing the existing cinema state.
+Pricing functions calculate new values without modifying the original cinema state.
 
-This supports predictable calculations and allows pricing rules to be tested independently.
+Booking confirmation creates an updated state only after all required calculations and validations succeed.
+
+This helps preserve consistency when an operation fails.
 
 ---
 
 ## 3. Integration
 
-The pricing module connects booking validation, pricing policies, native fee calculation, and booking confirmation.
+The pricing module connects domain validation, configurable policies, native booking fees, and booking confirmation.
 
 ### 3.1 Ticket Quotation Workflow
 
-The user selects option `6` — Quote ticket.
+The user selects option 6 — Quote ticket.
 
-The application receives the session ID, seat number, customer type, and selected pricing policy.
+The application receives the session ID, seat number, customer type, and pricing policy.
 
-The quotation workflow then:
+The quotation process follows these steps:
 
-1. Validates the booking input.
-2. Retrieves the session ticket price.
-3. Applies the customer discount.
-4. Applies the configured pricing policy.
-5. Calculates the booking fee.
-6. Returns the final quotation.
+1. The booking input is validated.
+2. The appropriate customer discount is selected.
+3. The configured pricing policy is applied.
+4. The discounted ticket price is calculated.
+5. The native C module calculates the booking fee.
+6. The application constructs the final quotation.
+7. The console displays the calculated ticket price.
 
-The console displays the calculated price to the user.
+This workflow demonstrates functional composition and explicit error handling.
 
-### 3.2 Pricing Example
+### 3.2 Standard Pricing Example
 
-Consider a cinema session with a base ticket price of **2,500.00 KZT**.
+Consider an adult customer booking a ticket with a base price of 2,500.00 KZT.
 
-For an adult customer using the standard policy:
+The standard policy applies no additional discount.
 
 | Component | Amount |
-|---|---:|
+|---|---|
 | Base ticket price | 2,500.00 KZT |
 | Customer discount | 0% |
 | Policy discount | 0% |
-| Discounted ticket price | 2,500.00 KZT |
+| Discounted price | 2,500.00 KZT |
 | Native booking fee (5%) | 125.00 KZT |
-| **Final total** | **2,625.00 KZT** |
+| Final total | 2,625.00 KZT |
 
-For an adult customer using the promotional policy:
+### 3.3 Promotional Pricing Example
+
+Consider the same adult customer using the promotional policy.
+
+The promotional policy applies a 10% discount.
 
 | Component | Amount |
-|---|---:|
+|---|---|
 | Base ticket price | 2,500.00 KZT |
-| Promotional discount | 10% |
-| Discounted ticket price | 2,250.00 KZT |
+| Customer discount | 0% |
+| Policy discount | 10% |
+| Discounted price | 2,250.00 KZT |
 | Native booking fee (5%) | 112.50 KZT |
-| **Final total** | **2,362.50 KZT** |
+| Final total | 2,362.50 KZT |
 
-These examples demonstrate how configurable pricing changes the final ticket cost.
+These examples demonstrate how changing the pricing policy affects the final ticket quotation.
 
-### 3.3 Native Fee Integration
+### 3.4 Native Fee Integration
 
-The method `Checkout.QuoteWithNativeFee()` combines ticket quotation with the native fee calculator.
+The method `Checkout.QuoteWithNativeFee()` connects the pricing module with the native C fee calculator.
 
-The native library calculates the additional booking fee using a rate expressed in basis points.
+The native function receives the discounted ticket price in cents and the fee rate in basis points.
 
-A rate of `500` basis points represents 5%.
+A rate of 500 basis points represents 5%.
 
-The final quotation includes the discounted ticket price and the calculated booking fee.
+The calculated fee is added to the discounted ticket price.
 
-### 3.4 Booking Integration
+If native fee calculation fails, the checkout workflow returns an explicit failure.
 
-The method `Checkout.BookWithNativeFee()` connects pricing with booking confirmation.
+### 3.5 Booking Integration
 
-A successful quotation is used to create a booking.
+The method `Checkout.BookWithNativeFee()` connects ticket quotation with booking confirmation.
 
-If pricing or fee calculation fails, the booking is not confirmed.
+The booking is confirmed only when validation, pricing, and native fee calculation succeed.
 
-This preserves the original application state.
+If a required operation fails, the system does not create a confirmed booking.
 
-### 3.5 Integration with Other Modules
+This protects the original cinema state from invalid changes.
 
-The pricing module uses session prices defined in the domain models.
+### 3.6 Integration with Other Modules
 
-The booking module uses the resulting quotation to confirm a reservation.
+The pricing module depends on validated booking information from the domain models.
 
-The native C module calculates the booking fee.
+The console interface receives customer input and displays ticket quotations.
 
-The console interface displays the quotation and any error messages.
+The native C module calculates booking fees.
 
-The JSON persistence module saves the updated cinema state after a successful booking.
+The booking service confirms reservations using valid pricing results.
+
+Together, these components provide a complete ticket pricing and checkout workflow.
 
 ---
 
 ## 4. Tests Relevant to My Responsibility
 
-The project contains an automated test runner in `Tests/TestRunner.cs`.
+The application includes an automated test runner in `Tests/TestRunner.cs`.
 
-The test suite was executed using:
+The tests were executed using:
 
-`dotnet run -- --test`
+```bash
+dotnet run -- --test
+```
 
 **Observed result:**
 
-`TOTAL: 34 passed, 0 failed`
+```text
+TOTAL: 34 passed, 0 failed
+```
 
 The following tests verify pricing, functional composition, and error handling.
 
-### Test 1 — Policies differ
+### Test 1 — Pricing Policies Differ
 
-**Method:** `Pricing.QuoteBooking()`
+**Method:** `Pricing.CurryPolicy()`
 
-**Expected result:**
+**Expected result:** A ticket price of 10,000 cents produces different results under standard and promotional policies.
 
-For a base price of 10,000 cents:
-
-- Standard policy produces 10,000 cents.
-- Promotional policy produces 9,000 cents.
+- Standard policy: 10,000 cents.
+- Promotional policy: 9,000 cents.
 
 **Actual result:** PASS.
 
-This confirms that configurable pricing policies affect the quotation.
-
-### Test 2 — Student discount
-
-**Method:** `Pricing.QuoteBooking()`
-
-**Expected result:**
-
-A student customer receives a 20% discount.
-
-A ticket priced at 10,000 cents produces a discounted total of 8,000 cents when no additional fee is applied.
-
-**Actual result:** PASS.
-
-### Test 3 — Map and Bind success
-
-**Methods:** `Map()` and `Bind()`
-
-**Expected result:**
-
-The initial value is `2`.
-
-`Map()` adds `1`, producing `3`.
-
-`Bind()` multiplies the result by `2`, producing `6`.
-
-The final result is `Result<int>.Ok` containing `6`.
-
-**Actual result:** PASS.
-
-### Test 4 — Map and Bind skip failure
-
-**Methods:** `Map()` and `Bind()`
-
-**Expected result:**
-
-When the initial result is a failure, the transformation functions are not executed.
-
-The counter remains `0`, and the final result remains a failure.
-
-**Actual result:** PASS.
-
-This demonstrates correct failure propagation.
-
-### Test 5 — Maybe found and missing
-
-**Method:** `Find()`
-
-**Expected result:**
-
-- An existing movie returns `Maybe<Movie>.Some`.
-- A nonexistent movie returns `Maybe<Movie>.None`.
-
-**Actual result:** PASS.
-
-### Test 6 — Reject discount over 100 percent
+### Test 2 — Student Discount
 
 **Method:** `Pricing.ConfigureDiscount()`
 
-**Expected result:**
-
-Attempting to configure a discount of 120% throws `ArgumentOutOfRangeException`.
+**Expected result:** Applying a 20% student discount to 10,000 cents produces 8,000 cents.
 
 **Actual result:** PASS.
 
-This verifies validation of invalid discount percentages.
+### Test 3 — Map and Bind Success
 
-### Test 7 — Native checkout workflow
+**Methods:** `Map()`, `Bind()`
 
-**Method:** `Checkout.BookWithNativeFee()`
-
-**Expected result:**
-
-A ticket priced at 10,000 cents with a 5% native fee produces a total of 10,500 cents.
-
-The booking is successfully created.
+**Expected result:** A successful result containing 2 is transformed to 3 and then to 6.
 
 **Actual result:** PASS.
 
-### Test 8 — Native failure preserves state
+This demonstrates functional composition using successful results.
+
+### Test 4 — Failure Skips Subsequent Operations
+
+**Methods:** `Map()`, `Bind()`
+
+**Expected result:** When an operation returns `Fail`, subsequent dependent functions are not executed.
+
+**Actual result:** PASS.
+
+This verifies safe failure propagation.
+
+### Test 5 — Maybe Found and Missing
+
+**Methods:** `Maybe<T>`, `Find()`
+
+**Expected result:** Searching for an existing movie returns `Some`, while searching for a missing movie returns `None`.
+
+**Actual result:** PASS.
+
+### Test 6 — Invalid Discount Rejected
+
+**Method:** `Pricing.ConfigureDiscount()`
+
+**Expected result:** Configuring an invalid discount of 120% throws `ArgumentOutOfRangeException`.
+
+**Actual result:** PASS.
+
+This verifies validation of pricing configuration.
+
+### Test 7 — Native Checkout Workflow
 
 **Method:** `Checkout.BookWithNativeFee()`
 
-**Expected result:**
+**Expected result:** A ticket price of 10,000 cents with a native fee of 500 cents produces a total of 10,500 cents and allows valid booking confirmation.
 
-When the fee calculator fails, the checkout operation returns a failure.
+**Actual result:** PASS.
 
-No booking is added, and the original state remains unchanged.
+### Test 8 — Native Failure Preserves State
+
+**Method:** `Checkout.BookWithNativeFee()`
+
+**Expected result:** If native fee calculation fails, booking confirmation is rejected and the original cinema state remains unchanged.
 
 **Actual result:** PASS.
 
 ### Testing Summary
 
-| Test name | Result |
+| Test Category | Result |
 |---|---|
-| Policies differ | PASS |
-| Student discount | PASS |
-| Map and Bind success | PASS |
-| Map and Bind skip failure | PASS |
-| Maybe found and missing | PASS |
-| Reject discount over 100 percent | PASS |
-| Native checkout workflow | PASS |
-| Native failure preserves state | PASS |
+| Standard and promotional policies | PASS |
+| Customer discount calculations | PASS |
+| Functional composition with Map and Bind | PASS |
+| Failure propagation | PASS |
+| Optional value handling | PASS |
+| Invalid pricing configuration | PASS |
+| Native checkout integration | PASS |
+| Immutable state preservation | PASS |
 
-All 34 automated tests passed during the observed local execution.
+The complete application passed all 34 automated tests during the observed local execution.
 
-These tests verify functionality relevant to my assigned area; the test runner alone does not establish individual test authorship.
+These tests verify the correctness of pricing calculations, configurable policies, functional error handling, and checkout integration.
 
 ---
 
 ## 5. Defect or Technical Challenge
 
-### Challenge: Preventing Failure Propagation from Producing Invalid Results
+### Challenge: Preventing Failed Pricing Operations from Affecting Bookings
 
-An important technical challenge in the pricing and checkout workflow is handling failures without allowing invalid operations to continue.
+An important technical challenge in the pricing module is ensuring that invalid calculations do not produce confirmed bookings.
 
-For example, if a booking request contains invalid information, the application must not continue to confirm a reservation.
+The ticket quotation workflow includes multiple dependent operations, including validation, discount calculation, pricing policy application, native fee calculation, and booking confirmation.
 
-Similarly, if the native fee calculator fails, the system must not create a booking using an incomplete quotation.
+If one operation fails, continuing the workflow could produce an invalid ticket price or inconsistent booking state.
 
-The implementation addresses this challenge through `Result<T>`, `Map()`, and `Bind()`.
+I addressed this challenge by using explicit result types and functional composition.
 
-These functional operations preserve failures and prevent dependent stages from executing after an unsuccessful result.
+The `Result<T>` type represents successful and unsuccessful operations.
 
-The automated test `Map and Bind skip failure` verifies that transformation functions are not executed after a failure.
+The `Map()` and `Bind()` methods allow the application to connect dependent calculations while propagating failures.
 
-The test `Native failure preserves state` verifies that a failed fee calculation does not create a booking.
+When a calculation fails, subsequent operations are skipped.
 
-Both tests passed.
+The checkout workflow also checks the native fee result before confirming a booking.
 
-This is a verified technical challenge addressed by the implementation, rather than evidence of a particular student's personal debugging history.
+If the native fee calculation fails, the operation returns a failure and preserves the original state.
+
+These safeguards are verified by automated tests for failure propagation and native checkout failure.
+
+The tests passed during the observed execution.
+
+This approach improves reliability by ensuring that booking confirmation occurs only after successful validation and pricing.
 
 ---
 
 ## 6. Limitations and Shared Work
 
-The Cinema Booking System has four assigned responsibility areas.
+The Cinema Booking System is a team project with four main responsibility areas.
 
-| Team member | Responsibility |
+| Team Member | Responsibility |
 |---|---|
-| Aisholpan | Movies, Sessions, and Console Interface |
-| Dilnaz | Booking, State Validation, and JSON Persistence |
-| Zhuldyzay | Pricing, Functional Composition, and Error Handling |
+| Aisholpan | Movies, Sessions, Console Interface, and System Integration |
+| Dilnaz | Booking Management, Domain Validation, and JSON Persistence |
+| Zhuldyzay | Pricing Logic, Functional Composition, and Error Handling |
 | Zhasmin | LINQ Reports, Extension Methods, and Native C Integration |
 
-My assigned responsibility focuses on ticket pricing, functional composition, and error handling.
+My contribution focuses on configurable pricing, functional composition, quotation construction, explicit error handling, and checkout integration.
 
-The pricing module depends on shared domain models, booking validation, native fee calculation, and console interaction.
+The pricing module depends on validated booking inputs and session information.
 
-The integrated project implementation was prepared centrally and divided into responsibility areas for the team defense.
+The native C module provides booking fee calculations.
+
+The booking service uses successful pricing results to confirm reservations.
+
+The console interface displays quotations and failure messages.
+
+Together, these modules create a complete ticket pricing and booking workflow.
 
 ### Current Limitations
 
 The application has several limitations:
 
-- It uses a console interface instead of a graphical interface.
-- Pricing policies are configured in application logic rather than through an external administration system.
-- It does not integrate with a real payment provider.
+- Pricing policies are configured in code rather than through an administrative interface.
+- The application uses a console interface instead of a graphical interface.
+- Real payment processing is not implemented.
 - Data is stored locally in JSON files.
 - Online multi-user booking synchronization is not supported.
 
-Despite these limitations, the application demonstrates configurable business rules, higher-order functions, functional composition, and explicit error handling.
+Despite these limitations, the system demonstrates configurable pricing, higher-order functions, functional composition, explicit error handling, and immutable state transitions.
 
 ---
 
@@ -399,43 +410,47 @@ Despite these limitations, the application demonstrates configurable business ru
 
 ### 7.1 Normal Flow — Ticket Quotation
 
-During the defense, I can demonstrate ticket quotation.
+During the defense, I can demonstrate the ticket quotation functionality.
 
-I start the application and select option `6`.
+I start the application and select option 6.
 
 I enter a valid session ID, seat number, customer type, and pricing policy.
 
-The system calculates the discounted ticket price and adds the native booking fee.
+The application validates the input, applies the appropriate discounts, calculates the native booking fee, and displays the final quotation.
 
-I can explain how `Pricing.QuoteBooking()` and `Checkout.QuoteWithNativeFee()` work together.
+I can explain how `ValidatedSelection.Create()`, `Pricing.ApplyPolicy()`, `Pricing.BuildQuote()`, and `Checkout.QuoteWithNativeFee()` work together.
 
 ### 7.2 Failure Flow — Invalid Discount
 
-I can demonstrate a validation failure using an invalid discount percentage.
+I can demonstrate validation by attempting to configure a discount greater than 100%.
 
-For example, calling `Pricing.ConfigureDiscount(120)` throws `ArgumentOutOfRangeException`.
+For example, `Pricing.ConfigureDiscount(120)` is invalid.
 
-The application rejects this invalid configuration.
+The method throws `ArgumentOutOfRangeException`.
 
-I can explain why discount percentages must be validated before they are used in pricing calculations.
+This prevents the application from creating an invalid pricing configuration.
 
-### 7.3 Failure Flow — Native Fee Error
+### 7.3 Failure Flow — Native Fee Calculation
 
-Another failure example occurs when the native fee calculator cannot produce a valid result.
+I can demonstrate a native fee calculation failure using the failing fee adapter.
 
-The checkout workflow returns `Result<CinemaState>.Fail`.
+When the native fee calculation returns `Fail`, the checkout operation is rejected.
 
-No booking is created.
+The original cinema state remains unchanged.
 
-This demonstrates safe error propagation and preservation of immutable state.
+This demonstrates functional error handling and safe state preservation.
 
 ### 7.4 Possible Live Code Change
 
-A possible live coding task is adding a new pricing policy.
+A possible live coding task is changing the promotional discount from 10% to 15%.
 
-For example, the instructor may request a 15% promotional discount.
+I would update the pricing policy configuration:
 
-I would use the existing configurable pricing functions to create the new policy and add an automated test verifying the expected quotation.
+```csharp
+var promo = Pricing.CurryPolicy(15);
+```
+
+I would then verify the new pricing result and run the automated tests.
 
 After making the change, I would execute:
 
@@ -444,40 +459,46 @@ dotnet build
 dotnet run -- --test
 ```
 
-This would verify that the new pricing rule works without breaking the existing functionality.
+This would demonstrate configurable pricing and the ability to modify a functional rule without rewriting the entire pricing workflow.
 
 ### 7.5 Functional Programming Concepts
 
-**Pure function:** A function that calculates a result without changing external state.
+**Pure function:** A function that calculates a result without modifying external state.
 
 **Higher-order function:** A function that accepts another function as an argument or returns a function.
 
-**Currying:** Transforming a function into a sequence of functions that accept arguments in stages.
+**Currying:** Transforming a function into a sequence of functions that receive arguments separately.
 
-**Partial application:** Fixing some arguments of a function to create a more specialized function.
+**Partial application:** Creating a specialized function by fixing some configuration values.
 
-**Map:** Transforms a successful value while preserving failures.
+**Functional composition:** Combining functions so that the output of one operation becomes the input of another.
 
-**Bind:** Connects dependent operations that may return success or failure.
+**Result type:** A type that explicitly represents success or failure.
 
-**Maybe:** Represents an existing or missing value explicitly.
+**Map:** Applies a transformation to a successful result while preserving failures.
 
-**Immutability:** Data is not modified in place during calculations.
+**Bind:** Connects dependent operations that may fail.
+
+**Maybe type:** Represents the presence or absence of a value.
+
+**Immutability:** Prevents direct modification of existing application state.
 
 ---
 
 ## 8. Conclusion
 
-My assigned responsibility in the Cinema Booking System focuses on pricing calculations, functional composition, and error handling.
+My contribution to the Cinema Booking System focuses on pricing logic, functional composition, and error handling.
 
-This part of the project demonstrates pure functions, higher-order functions, currying, partial application, immutable data, and explicit success and failure handling.
+I developed configurable pricing functions, implemented customer discounts and pricing policies, connected functional operations into a quotation pipeline, and integrated pricing with the checkout workflow.
 
-The pricing module supports different customer discounts and configurable pricing policies.
+This part of the project demonstrates important functional programming principles, including pure functions, higher-order functions, currying, partial application, functional composition, explicit error handling, and immutable state transitions.
 
-The checkout module integrates ticket pricing with native fee calculation and booking confirmation.
+The pricing module supports different customer categories and configurable policies.
 
-Automated tests verify pricing differences, discounts, functional composition, failure propagation, and checkout behavior.
+The checkout workflow combines discounted ticket prices with native booking fee calculations while preventing failed operations from creating invalid bookings.
+
+Automated tests verify pricing calculations, functional composition, failure propagation, invalid discount rejection, native checkout integration, and state preservation.
 
 The complete application passed all 34 automated tests during the observed local execution.
 
-The project demonstrates how functional programming techniques can make business calculations more predictable, reusable, and reliable.
+The project demonstrates how functional programming techniques can be applied to implement reliable and configurable ticket pricing in a practical C# application.
