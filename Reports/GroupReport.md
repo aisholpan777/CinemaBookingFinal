@@ -1,5 +1,10 @@
 # Group Project Report — Cinema Booking System
 
+Repository URL: https://github.com/aisholpan777/CinemaBookingFinal
+Branch: main
+Final Commit SHA: 79921fa1713f579458825b18aa5b6e77bcc3fda8
+
+
 **Course:** Introduction to Functional Programming  
 **Academic Year:** 2026–2027  
 **Project:** Cinema Booking System  
